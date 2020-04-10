@@ -1,6 +1,9 @@
 <template>
+<div>
+
+<Nav />
+
   <div class="home container mx-auto px-1">
-    
     <!-- Two columns -->
       <div class="flex mb-4">
         <div class="shadow-md rounded w-2/3 mx-1 bg-gray-100"><CompanyCard /></div>
@@ -9,17 +12,21 @@
     
     
   </div>
+  </div>
 </template>
 
 <script>
 import LoginCard from '@/components/LoginForm.vue'
 import CompanyCard from '@/components/CompanyList.vue'
+import Nav from '@/components/Nav.vue'
 
 export default {
   name: 'Home',
   components: {
     LoginCard,
-    CompanyCard
+    CompanyCard,
+    Nav
   }
+  
 }
 </script>

@@ -1,5 +1,15 @@
 <template>
   <div id="login-form">
+    <v-container v-if="loading">
+    <div class="text-xs-center">
+      <v-progress-circular
+        indeterminate
+        :size="50"
+        :width="8"
+        color="green">
+      </v-progress-circular>
+    </div>
+  </v-container>
     <div class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4" v-show="error" role="alert">
       <p class="font-bold">Login Failed</p>
       <p>{{errorMsg}}</p>
@@ -26,6 +36,10 @@
         Forgot Password?
       </a>
     </div>
+    <div class="flex items-center justify-between">
+      Admin: <input type="checkbox" v-model="x">
+    </div>
+     
   </form>
   <p class="text-center text-gray-500 text-xs">
     &copy;2020 Acme Corp. All rights reserved.
@@ -42,49 +56,93 @@ import axios from 'axios';
 
   export default {
     name: 'login-form',
+     props : ["nextUrl"],
     data() {
       return {
         login: {
           username: '',
           password: '',
-          type:'admin',          
+          type:'',          
         },
         error:false,
-        errorMsg:""
+        errorMsg:"",
+        loading:false,
+        x:""       
+        
       }
     },
     methods: {
-    handleSubmit() {
+    handleSubmit() {  
+        
+      if(this.x) {
+        this.login.type = 'admin'
+      }
+      else{
+        this.login.type = 'company'
+      }
+
        // this.$emit('add:login', this.login)
-         axios
+       if(this.login.username!= '' && this.login.password!=''){
+         this.loading= true 
+          axios
           .post('http://localhost:8000/api/v1/auth/login', this.login)
           .then(request => this.loginSuccessful(request))
           //.catch((e) => this.loginFailed(e))
           console.log('testing handleSubmit')
+       }
+       else{
+         this.error = true;
+         this.errorMsg = 'Username and Password must be field'
+       }
+         
     },
 
     loginSuccessful (req) {
-      console.log('Login Success')
+      console.log('Login Responded')
+      this.loading = false;
       if (!req.data.status) {
         this.error = true
-        this.errorMsg = req.data.message
+        this.errorMsg = req.data.message        
         this.loginFailed()
         return
       }
 
-      localStorage.token = req.data.token
+      localStorage.token = req.data.token;
+      localStorage.user = req.data.type;
+      //localStorage.setItem('user',JSON.stringify(req.data.user))
       console.log(localStorage.token)
-      this.error = false
+      this.error = false;
+     let is_admin = (req.data.type =='admin')?true:false;
+     let is_company = (req.data.type =='company')?true:false;
+     let is_employee = (req.data.type =='employee')?true:false;
 
-      if(req.data.type == 'admin'){
-        this.$router.replace(this.$route.query.redirect || '/dashboard')
-      }
-      else if(req.data.type == 'company'){
-        this.$router.replace(this.$route.query.redirect || '/companyDash')
-      }
-       else if(req.data.type == 'employee'){
-        this.$router.replace(this.$route.query.redirect || '/employeeDash')
-      }
+      if (localStorage.token != null){
+        this.$emit('loggedIn')
+        if(this.$route.params.nextUrl != null){
+            this.$router.push(this.$route.params.nextUrl)
+        }
+        else {
+            if(is_admin){
+                this.$router.push('dashboard')
+            }
+            else if(is_company){
+                this.$router.push('dashboardCompany')
+            }
+            else if(is_employee) {
+                this.$router.push('dashboardEmployee')
+            }
+        }
+    }
+
+      // if(req.data.type == 'admin'){
+      //   this.$router.replace(this.$route.query.redirect || '/dashboard')
+      // }
+      // else if(req.data.type == 'company'){
+      //   this.$router.replace(this.$route.query.redirect || '/companyDash')
+      // }
+      //  else if(req.data.type == 'employee'){
+      //   this.$router.replace(this.$route.query.redirect || '/employeeDash')
+      // }
       
     },
     loginFailed () {
@@ -99,4 +157,7 @@ import axios from 'axios';
   form {
     margin-bottom: 2rem;
   }
+  .v-progress-circular{
+    margin: 1rem
+  }    
 </style>

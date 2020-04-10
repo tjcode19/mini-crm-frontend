@@ -1,6 +1,87 @@
 <template>
-  <div class="dashboard mx-auto px-1">
-    <h1>This is an about page</h1>
+
+<div>
+  <Nav/>
+
+  <div class="dashboard mx-auto px-1 pt-4">   
+    <modal name="view-details" @before-open="beforeOpen" class="px-5 my-auto" :height="400">
+       <table class="table-auto mx-auto" v-show="userAction=='view'">
+  <thead>
+    <tr>
+      <th class="px-4 py-2" colspan="2">{{ companyData.name }} Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border px-4 py-2">Name</td>
+      <td class="border px-4 py-2">{{ companyData.name }}</td>
+      
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Email</td>
+      <td class="border px-4 py-2">{{ companyData.email }}</td>      
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Status</td>
+      <td class="border px-4 py-2">{{ companyData.status }}</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<form class="px-8 pt-6 pb-8 mb-4"  @submit.prevent="editDetails" v-show="userAction=='edit'">
+  <div class=" bg-green-200 border-l-4 border-green-500 text-green-900 p-2" v-show="isResponse" role="alert">
+      <p class="font-bold">Success!</p>
+      <p>{{resMsg}}</p>
+    </div>
+    <div class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4" v-show="isResponseError" role="alert">
+      <p class="font-bold">Failed</p>
+      <p>{{resMsg}}</p>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+        Name
+      </label>
+      <input v-model="companyData.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+        Email
+      </label>
+      <input v-model="companyData.email" class="shadow appearance-none border border-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text">
+      <!-- <p class="text-red-500 text-xs italic">Please choose a password.</p> -->
+    </div>
+    <div class="flex items-center justify-between">
+      <button v-on:click="closeModal" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+        Cancel
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+        Edit
+      </button>
+     
+    </div>     
+  </form>
+
+  <div v-show="userAction=='delete'">
+    <p>Are you sure you want to delete?</p>
+    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">No</button>
+    <button v-on:click="deleteItem" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">Proceed</button>
+  </div>
+
+   <div v-show="userAction=='deleted'">
+    <div class=" bg-green-200 border-l-4 border-green-500 text-green-900 p-2" v-show="isResponse" role="alert">
+      <p class="font-bold">Success!</p>
+      <p>{{resMsg}}</p>
+    </div>
+    <div class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4" v-show="isResponseError" role="alert">
+      <p class="font-bold">Failed</p>
+      <p>{{resMsg}}</p>
+    </div>
+    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">Close</button>
+  </div>
+    </modal>
+
+    
     <!-- Two columns -->
     <div class="flex mb-4">
       <div class="w-1/2 bg-gray-400 mx-2">
@@ -12,17 +93,89 @@
   </div>
     </div>
   </div>
+
+  </div>
 </template>
 
 <script>
 import CompanyCard from '@/components/CompanyList.vue'
 import EmployeeCard from '@/components/EmployeeList.vue'
+import Nav from '@/components/Nav.vue'
+import axios from 'axios';
 
 export default {
-  name: 'Home',
+  name: 'Home',  
   components: {
     CompanyCard,
-    EmployeeCard
-  }
+    EmployeeCard,
+    Nav,
+  },
+  data(){
+    return{
+      loginToken : localStorage.getItem('token'),
+      companyData:[],
+      userAction: '',
+      resMsg:'',
+      isResponse:false,
+      isResponseError:false,
+      type:''
+    }
+
+  },
+  mounted(){
+  },
+  methods:{
+    beforeOpen (event) {
+      console.log(event.params.companyData);
+      this.companyData = event.params.companyData;
+      this.userAction = event.params.action;   
+      this.type = event.params.type;     
+    },
+
+    editDetails(){
+      if(this.type == 'company'){
+        axios
+        .put('http://localhost:8000/api/v1/company/'+this.companyData.company_id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .then(response => (this.resData(response.data)))
+      }else{
+        axios
+        .put('http://localhost:8000/api/v1/employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .then(response => (this.resData(response.data)))
+      }
+      },
+
+      deleteItem(){
+      if(this.type == 'company'){
+        axios
+        .delete('http://localhost:8000/api/v1/company/'+this.companyData.company_id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .then(response => (this.resData(response.data)))
+        this.userAction = 'deleted';
+      }else{
+        axios
+        .delete('http://localhost:8000/api/v1/employee/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .then(response => (this.resData(response.data)))
+        this.userAction = 'deleted';
+      }
+      },
+
+      resData(response){
+        if(response.status){
+            this.isResponse = true;
+        }
+        else{
+            this.isResponseError = true;
+        }
+        
+        console.log(response);
+        this.resMsg = response.message
+      },
+
+      closeModal(){
+        this.$modal.hide('view-details');
+      }
+
+    }
+  
+  
 }
 </script>

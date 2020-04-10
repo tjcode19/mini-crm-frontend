@@ -19,14 +19,12 @@
   </thead>
   <tbody>
     <tr v-for="company in companies.data" :key="company.id">
-      <td class="border px-4 py-2"><img alt="Vue logo" src="../assets/logo.png" class="w-4 h-4 rounded-full mr-1"></td>
+      <td class="border px-4 py-2">Name</td>
       <td class="border px-4 py-2">{{ company.name }}</td>
-      <td class="border px-4 py-2">{{ company.status }}</td>
-      <td class="border px-4 py-2">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">
-          View Details
-        </button>
-      </td>
+    </tr>
+    <tr v-for="company in companies.data" :key="company.id">
+      <td class="border px-4 py-2">Name</td>
+      <td class="border px-4 py-2">{{ company.name }}</td>
     </tr>
   </tbody>
 </table>
@@ -45,7 +43,7 @@
   },
   mounted () {
     axios
-      .get('http://localhost:8000/api/v1/company/all/')
+      .get('http://localhost:8000/api/v1/company/1/')
       .then(response => (this.companies = response.data))
   }
   }

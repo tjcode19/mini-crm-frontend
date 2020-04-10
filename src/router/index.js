@@ -7,36 +7,48 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'login',
     component: Home
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'dashboard',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+    meta: {
+        requiresAuth: true,
+        is_admin : true
+    }
   },
   {
     path: '/companyDash',
-    name: 'DashboardCompany',
+    name: 'dashboardCompany',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "comapnyDash" */ '../views/DashboardCompany.vue')
+    component: () => import(/* webpackChunkName: "dashboardCompany" */ '../views/DashboardCompany.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
   {
     path: '/employeeDash',
-    name: 'DashboardEmployee',
+    name: 'dashboardEmployee',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "employeeDash" */ '../views/DashboardEmployee.vue')
+    component: () => import(/* webpackChunkName: "dashboardEmployee" */ '../views/DashboardEmployee.vue'),
+    meta: {
+      requiresAuth: true
   }
+  }
+  
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
@@ -48,24 +60,24 @@ router.beforeEach((to, from, next) => {
               params: { nextUrl: to.fullPath }
           })
       } else {
-          let user = JSON.parse(localStorage.getItem('user'))
+         // let user = JSON.parse(localStorage.getItem('user'))
           if(to.matched.some(record => record.meta.is_admin)) {
-              if(user.is_admin == 1){
+              if(localStorage.getItem('user') == 'admin'){
                   next()
               }
               else{
-                  next({ name: 'userboard'})
+                  next({ name: 'login'})
               }
           }else {
               next()
           }
       }
   } else if(to.matched.some(record => record.meta.guest)) {
-      if(localStorage.getItem('jwt') == null){
+      if(localStorage.getItem('token') == null){
           next()
       }
       else{
-          next({ name: 'userboard'})
+          next({ name: 'dashboardCompany'})
       }
   }else {
       next()
