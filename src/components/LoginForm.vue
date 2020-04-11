@@ -42,7 +42,7 @@
      
   </form>
   <p class="text-center text-gray-500 text-xs">
-    &copy;2020 Acme Corp. All rights reserved.
+    &copy;2020 Mini CRM. tjcode19
   </p>
     
   </div>
@@ -109,8 +109,9 @@ import axios from 'axios';
 
       localStorage.token = req.data.token;
       localStorage.user = req.data.type;
-      //localStorage.setItem('user',JSON.stringify(req.data.user))
-      console.log(localStorage.token)
+      localStorage.userID = req.data.data.id;
+      
+      console.log('UserID: '+localStorage.userID)
       this.error = false;
      let is_admin = (req.data.type =='admin')?true:false;
      let is_company = (req.data.type =='company')?true:false;
@@ -126,9 +127,11 @@ import axios from 'axios';
                 this.$router.push('dashboard')
             }
             else if(is_company){
+              localStorage.setItem('userCompany',JSON.stringify(req.data.data))
                 this.$router.push('dashboardCompany')
             }
             else if(is_employee) {
+              localStorage.setItem('userCompany',JSON.stringify(req.data.company))
                 this.$router.push('dashboardEmployee')
             }
         }

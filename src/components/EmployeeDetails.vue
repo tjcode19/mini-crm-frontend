@@ -33,7 +33,7 @@
     return {
       loginToken : localStorage.getItem('token'),
       userID: localStorage.getItem('userID'),
-      employees: [],
+      employee: [],
       
     }
   },
@@ -41,7 +41,7 @@
     axios
       .get('http://localhost:8000/api/v1/employee/'+this.userID,   
       { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
-      .then(response => (this.employees = response.data))
+      .then(response => (this.employee = response.data.data))
   }
   }
 </script>

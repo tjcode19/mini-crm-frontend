@@ -23,7 +23,7 @@ const routes = [
     }
   },
   {
-    path: '/companyDash',
+    path: '/dashboardCompany',
     name: 'dashboardCompany',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -34,7 +34,7 @@ const routes = [
     }
   },
   {
-    path: '/employeeDash',
+    path: '/dashboardEmployee',
     name: 'dashboardEmployee',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

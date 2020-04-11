@@ -1,4 +1,6 @@
 <template>
+<div>
+  <Nav/>
   <div class="dashboard mx-auto px-1">
     <h1>This is an about page</h1>
     <!-- Two columns -->
@@ -12,17 +14,21 @@
   </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
-import CompanyCard from '@/components/CompanyList.vue'
+import CompanyCard from '@/components/CompanyDetails.vue'
 import EmployeeDetailsCard from '@/components/EmployeeDetails.vue'
+import Nav from '@/components/Nav.vue'
+//import axios from 'axios';
 
 export default {
   name: 'Home',
   components: {
     CompanyCard,
-    EmployeeDetailsCard
+    EmployeeDetailsCard,
+    Nav
   }
 }
 </script>
