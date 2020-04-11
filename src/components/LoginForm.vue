@@ -36,9 +36,6 @@
         Forgot Password?
       </a>
     </div>
-    <div class="flex items-center justify-between">
-      Admin: <input type="checkbox" v-model="x">
-    </div>
      
   </form>
   <p class="text-center text-gray-500 text-xs">
@@ -61,26 +58,16 @@ import axios from 'axios';
       return {
         login: {
           username: '',
-          password: '',
-          type:'',          
+          password: ''       
         },
         error:false,
         errorMsg:"",
-        loading:false,
-        x:""       
-        
+        loading:false        
       }
     },
     methods: {
     handleSubmit() {  
-        
-      if(this.x) {
-        this.login.type = 'admin'
-      }
-      else{
-        this.login.type = 'company'
-      }
-
+       
        // this.$emit('add:login', this.login)
        if(this.login.username!= '' && this.login.password!=''){
          this.loading= true 
@@ -110,6 +97,7 @@ import axios from 'axios';
       localStorage.token = req.data.token;
       localStorage.user = req.data.type;
       localStorage.userID = req.data.data.id;
+      localStorage.setItem('userCompany',JSON.stringify(req.data.company))
       
       console.log('UserID: '+localStorage.userID)
       this.error = false;
@@ -127,11 +115,9 @@ import axios from 'axios';
                 this.$router.push('dashboard')
             }
             else if(is_company){
-              localStorage.setItem('userCompany',JSON.stringify(req.data.data))
                 this.$router.push('dashboardCompany')
             }
             else if(is_employee) {
-              localStorage.setItem('userCompany',JSON.stringify(req.data.company))
                 this.$router.push('dashboardEmployee')
             }
         }

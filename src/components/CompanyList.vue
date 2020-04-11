@@ -10,7 +10,7 @@
       <th class="px-4 py-2">Name</th>
       <th class="px-4 py-2">Email</th>
       <th class="px-4 py-2">Status</th>
-      <th class="px-4 py-2">Views</th>
+      <th class="px-4 py-2"></th>
     </tr>
   </thead>
   <tbody>
@@ -31,8 +31,25 @@
         </button>
       </td>
     </tr>
+
   </tbody>
 </table>
+<paginated-list :list-data="companies"/>  
+<div>
+  <ul>
+    <li v-for="p in paginatedData" :key="p.id">
+      {{p.first}} 
+      {{p.last}}  
+      {{p.suffix}}
+    </li>
+  </ul>
+  <button @click="prevPage">
+    Previous
+  </button>
+  <button @click="nextPage">
+    Next
+  </button>
+</div>
   </div>
 </template>
 
@@ -41,14 +58,27 @@
   let baseURL= 'http://localhost:8000/api/v1/company/';
   export default {
     name: 'companies-table',
+    components: 'list-data',
     
     data () {
     return {
       companies: [],
       companyD:[],
        loginToken : localStorage.getItem('token'),
-       login: false
+       login: false,
+       pageNumber: 0,
     }
+  },
+  props:{
+      listData:{
+        type:Array,
+        required:true
+      },
+      size:{
+        type:Number,
+        required:false,
+        default: 1
+      }
   },
   mounted () {
     axios
@@ -77,8 +107,27 @@
     },
     addNewComp(){
       this.$root.$modal.show('view-details', {type:'company',companyData: [], action: 'new', });
-    }
+    },
+    nextPage(){
+         this.pageNumber++;
+      },
+      prevPage(){
+        this.pageNumber--;
+      }
 
+  },
+   computed:{
+    pageCount(){
+      let l = this.listData.length,
+          s = this.size;
+      return Math.ceil(l/s);
+    },
+    paginatedData(){
+      const start = this.pageNumber * this.size,
+            end = start + this.size;
+      return this.listData
+               .slice(start, end);
+    }
   },
   }
 </script>

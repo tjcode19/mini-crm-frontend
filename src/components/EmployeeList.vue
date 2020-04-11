@@ -1,13 +1,5 @@
 <template>
   <div id="employees-table">
-    <!-- <table>
-      <tbody>
-        <tr v-for="company in companies.data" :key="company.id">
-          <td>{{ company.name }}</td>
-          <td>{{ company.status }}</td>
-        </tr>
-      </tbody>
-    </table> -->
     <table class="table-auto">
   <thead>
     <tr>
@@ -15,7 +7,7 @@
       <th class="px-4 py-2">Name</th>
       <th class="px-4 py-2">Email</th>
       <th class="px-4 py-2">Status</th>
-      <th class="px-4 py-2">Views</th>
+      <th class="px-4 py-2"></th>
     </tr>
   </thead>
   <tbody>
@@ -79,7 +71,8 @@
     },
     hide () {
       this.$root.$modal.hide('view-details');
-    }
+    },
+    
   }
 
   }

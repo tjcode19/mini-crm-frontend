@@ -79,13 +79,19 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="name_n">
         Name
       </label>
-      <input v-model="newComp.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name_n" type="text">
+      <input required v-model="newComp.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name_n" type="text">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="name_n_e">
+        Employee Name
+      </label>
+      <input required v-model="newComp.employee_name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name_n_e" type="text">
     </div>
     <div class="mb-6">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="email_n">
         Email
       </label>
-      <input v-model="newComp.email" class="shadow appearance-none border border-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="email_n" type="text">
+      <input required v-model="newComp.email" class="shadow appearance-none border border-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="email_n" type="text">
       <!-- <p class="text-red-500 text-xs italic">Please choose a password.</p> -->
     </div>
     <div class="mb-6">
@@ -112,6 +118,8 @@
      
     </div>     
   </form>
+
+  
 
   <div v-show="userAction=='delete'">
     <p>Are you sure you want to delete?</p>
@@ -174,10 +182,17 @@ export default {
       type:'',
       newComp:{
         name:'',
+        employee_name:'',
         email:'',
         password:'',
         password_c:''
-      }
+      },
+      newEmp: {
+          company_id: '',
+          name: '',
+          password: '',
+          email:'',          
+        },
         
     }
 
@@ -199,13 +214,13 @@ export default {
         .then(response => (this.resData(response.data)))
       }else{
         axios
-        .put('http://localhost:8000/api/v1/employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .put(baseUrl+'employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
       }
       },
 
       addNewComp(){
-        if(this.newComp.name!=''){
+        if(this.newComp.name!='' && this.newComp.email!='' && this.newComp.password!=''){          
             axios
             .post(baseUrl+'company/create', this.newComp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
             .then(response => (this.resData(response.data)))
@@ -217,6 +232,7 @@ export default {
       
       
       },
+
 
       deleteItem(){
       if(this.type == 'company'){

@@ -82,7 +82,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="name_n">
         Name
       </label>
-      <input v-model="newEmp.name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name_n" type="text">
+      <input v-model="newEmp.employee_name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name_n" type="text">
     </div>
     <div class="mb-6">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="email_n">
@@ -175,9 +175,10 @@ export default {
       type:'',
       newEmp: {
           company_id: '',
-          name: '',
+          employee_name: '',
           password: '',
-          email:'',          
+          email:'', 
+          type:'employee'         
         },
     }
 
@@ -200,11 +201,17 @@ export default {
       },
 
       addNewEmp(){
-        if(this.newEmp.name!=''){
+        if(this.newEmp.employee_name!=''){
           this.newEmp.company_id = this.companyDetails.company_id;
+         
             axios
             .post(baseUrl+'company/create', this.newEmp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
             .then(response => (this.resData(response.data)))
+
+             this.companyData.push(this.newEmp);
+          console.log(this.newEmp);
+           console.log(this.companyData);
+
         }
         else{
           this.isResponseError=true;
@@ -216,7 +223,7 @@ export default {
 
       deleteItem(){
         axios
-        .delete('http://localhost:8000/api/v1/employee/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        .delete(baseUrl+'company/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
         this.userAction = 'deleted';
       
