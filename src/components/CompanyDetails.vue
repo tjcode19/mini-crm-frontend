@@ -20,8 +20,8 @@
       <td class="border px-4 py-2">{{ company.name }}</td>
     </tr>
     <tr>
-      <td class="border px-4 py-2">Name</td>
-      <td class="border px-4 py-2">{{ company.name }}</td>
+      <td class="border px-4 py-2">Email</td>
+      <td class="border px-4 py-2">{{ company.email }}</td>
     </tr>
   </tbody>
 </table>

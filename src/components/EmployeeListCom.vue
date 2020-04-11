@@ -8,7 +8,7 @@
         </tr>
       </tbody>
     </table> -->
-     <button v-show="login" v-on:click="addNewEmp" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+     <button v-on:click="addNewEmp" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
           Add New Employee
         </button>
     <table class="table-auto">
@@ -28,13 +28,13 @@
       <td class="border px-4 py-2">{{ employee.email }}</td>
       <td class="border px-4 py-2">{{ employee.status }}</td>
       <td class="border px-4 py-2">
-        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">
-          View Details
+        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full">
+          View
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
           Edit
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
           Delete
         </button>
       </td>
@@ -84,7 +84,9 @@
     hide () {
       this.$root.$modal.hide('view-details');
     },
-    addNewEmp(){}
+    addNewEmp(){
+      this.$root.$modal.show('view-details', {type:'company',companyData: [], action: 'new', });
+    }
   }
 
   }

@@ -1,13 +1,8 @@
 <template>
   <div id="companies-table">
-    <!-- <table>
-      <tbody>
-        <tr v-for="company in companies.data" :key="company.id">
-          <td>{{ company.name }}</td>
-          <td>{{ company.status }}</td>
-        </tr>
-      </tbody>
-    </table> -->
+    <button v-show="login" v-on:click="addNewComp" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+          Add New Company
+        </button>
     <table class="table-auto">
   <thead>
     <tr>
@@ -25,13 +20,13 @@
       <td class="border px-4 py-2">{{ company.email }}</td>
       <td class="border px-4 py-2">{{ company.status }}</td>
       <td class="border px-4 py-2">
-        <button v-on:click="getSingle(company.company_id, 'view', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+        <button v-on:click="getSingle(company.company_id, 'view', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
           View 
         </button>
-        <button v-show="login" v-on:click="getSingle(company.company_id, 'edit', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(company.company_id, 'edit', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
           Edit
         </button>
-        <button v-show="login" v-on:click="getSingle(company.company_id, 'delete', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(company.company_id, 'delete', 'company')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
           Delete
         </button>
       </td>
@@ -43,6 +38,7 @@
 
 <script>
   import axios from 'axios';
+  let baseURL= 'http://localhost:8000/api/v1/company/';
   export default {
     name: 'companies-table',
     
@@ -56,7 +52,7 @@
   },
   mounted () {
     axios
-      .get('http://localhost:8000/api/v1/company/all/')
+      .get(baseURL+ 'all/')
       .then(response => (this.companies = response.data))
         if(this.loginToken!=""){
           this.login = true
@@ -78,6 +74,9 @@
     },
     hide () {
       this.$root.$modal.hide('view-details');
+    },
+    addNewComp(){
+      this.$root.$modal.show('view-details', {type:'company',companyData: [], action: 'new', });
     }
 
   },
