@@ -5,7 +5,7 @@
     <table class="table-auto w-full text-left">
   <thead>
     <tr>
-      <th class="px-4 py-2">Logo</th>
+      <th class="px-4 py-2">S/N</th>
       <th class="px-4 py-2">Name</th>
       <th class="px-4 py-2">Email</th>
       <th class="px-4 py-2"></th>
@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <tr v-for="employee in sortedEmp" :key="employee.id">
-      <td class="border px-4 py-2"><img alt="Vue logo" src="../assets/logo.png" class="w-4 h-4 rounded-full mr-1"></td>
+      <td class="border px-4 py-2">{{employee.id}}</td>
       <td class="border px-4 py-2">{{ employee.name }}</td>
       <td class="border px-4 py-2">{{ employee.email }}</td>
       <td class="border px-4 py-2 text-center">
