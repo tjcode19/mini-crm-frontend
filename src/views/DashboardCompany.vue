@@ -152,9 +152,11 @@
 import CompanyDetailsCard from '@/components/CompanyDetails.vue'
 import EmployeeCard from '@/components/EmployeeListCom.vue'
 import Nav from '@/components/Nav.vue'
-import axios from 'axios';
+//import axios from 'axios';
 
-let baseUrl = 'http://localhost:8000/api/v1/employee/';
+//let baseUrl = 'http://localhost:8000/api/v1/employee/';
+
+ import {HTTP} from '../config';
 
 export default {
   name: 'Home',
@@ -194,8 +196,8 @@ export default {
         this.$modal.hide('view-details');
       },
       editDetails(){
-        axios
-        .put(baseUrl+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .put('employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
       
       },
@@ -204,8 +206,8 @@ export default {
         if(this.newEmp.employee_name!=''){
           this.newEmp.company_id = this.companyDetails.company_id;
          
-            axios
-            .post(baseUrl+'company/create', this.newEmp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+            HTTP
+            .post('employee/company/create', this.newEmp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
             .then(response => (this.resData(response.data)))
 
              this.companyData.push(this.newEmp);
@@ -222,8 +224,8 @@ export default {
       },
 
       deleteItem(){
-        axios
-        .delete(baseUrl+'company/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .delete('employee/company/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
         this.userAction = 'deleted';
       

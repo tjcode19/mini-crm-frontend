@@ -93,9 +93,11 @@ import CompanyCard from '@/components/CompanyDetails.vue'
 import EmployeeDetailsCard from '@/components/EmployeeDetails.vue'
 import Nav from '@/components/Nav.vue'
 
-import axios from 'axios';
+//import axios from 'axios';
 
-let baseUrl = 'http://localhost:8000/api/v1/employee/';
+//let baseUrl = 'http://localhost:8000/api/v1/employee/';
+
+ import {HTTP} from '../config';
 
 export default {
   name: 'Home',
@@ -135,16 +137,16 @@ export default {
         this.isResponse=false;
       },
       editDetails(){
-        axios
-        .put(baseUrl+this.userID, {name: this.employeeData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .put('employee/'+this.userID, {name: this.employeeData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
       
       },
 
       changePass(){
         if(this.cp.password==this.cp.password_c){
-            axios
-            .post(baseUrl+'changepass', this.cp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+            HTTP
+            .post('employee/changepass', this.cp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
             .then(response => (this.resData(response.data)))
         }
         else{

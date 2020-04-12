@@ -3,6 +3,8 @@
     <button v-show="login" v-on:click="addNewComp" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
           Add New Company
         </button>
+
+        <p>Page {{currentPage}} of {{ Math.round(totalPage) }}</p>
     <table class="table-auto">
   <thead>
     <tr>
@@ -14,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="company in sortedCats" :key="company.id">
+    <tr v-for="company in sortedComp" :key="company.id">
       <td class="border px-4 py-2"><img alt="Vue logo" src="../assets/logo.png" class="w-4 h-4 rounded-full mr-1"></td>
       <td class="border px-4 py-2">{{ company.name }}</td>
       <td class="border px-4 py-2">{{ company.email }}</td>
@@ -34,24 +36,8 @@
 
   </tbody>
 </table>
-<!-- <paginated-list :list-data="companies"/>  
-<div>
-  <ul>
-    <li v-for="p in paginatedData" :key="p.id">
-      {{p.first}} 
-      {{p.last}}  
-      {{p.suffix}}
-    </li>
-  </ul>
-  <button @click="prevPage">
-    Previous
-  </button>
-  <button @click="nextPage">
-    Next
-  </button>
-</div> -->
 
-debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
+
 
 <p>
 <button v-on:click="prevPage">Previous</button> 
@@ -61,8 +47,8 @@ debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
 </template>
 
 <script>
-  import axios from 'axios';
-  let baseURL= 'http://localhost:8000/api/v1/company/';
+  import {HTTP} from '../config';
+
   export default {
     name: 'companies-table',
     
@@ -73,16 +59,19 @@ debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
        loginToken : localStorage.getItem('token'),
        login: false,
        pageSize:5,
-  currentPage:1,
-  currentSort:'id',
-  currentSortDir:'asc'
-      // pageNumber: 0,
+        currentPage:1,
+        currentSort:'id',
+        currentSortDir:'asc',
+        totalPage:0,
+        errors:''
     }
   },
   mounted () {
-    axios
-      .get(baseURL+ 'all/')
+    HTTP.get('company/all/')
       .then(response => (this.companies = response.data.data))
+      .catch(e => {
+        this.errors.push(e)
+      })
         if(this.loginToken!=""){
           this.login = true
         }
@@ -92,9 +81,12 @@ debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
   },
   methods: {
     getSingle(id, action, type){
-        axios
-        .get('http://localhost:8000/api/v1/company/'+id )
+        HTTP
+        .get('company/'+id )
         .then(response => (this.show(response.data, action, type)))    
+        .catch(e => {
+          this.errors.push(e)
+          })
 
     },
 
@@ -120,17 +112,10 @@ debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
       }
       this.currentSort = s;
     }
-    // nextPage(){
-    //      this.pageNumber++;
-    //   },
-    //   prevPage(){
-    //     this.pageNumber--;
-    //   }
-
   },
 
   computed:{
-      sortedCats:function() {
+      sortedComp:function() {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         return this.companies.sort((a,b) => {
           let modifier = 1;
@@ -141,6 +126,7 @@ debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
         }).filter((row, index) => {
             let start = (this.currentPage-1)*this.pageSize;
             let end = this.currentPage*this.pageSize;
+            this.totalPage =  this.companies.length/this.pageSize;
             if(index >= start && index < end) return true;
           });
       }

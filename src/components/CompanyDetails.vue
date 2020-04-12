@@ -1,14 +1,6 @@
 <template>
   <div id="companies-table">
-    <!-- <table>
-      <tbody>
-        <tr v-for="company in companies.data" :key="company.id">
-          <td>{{ company.name }}</td>
-          <td>{{ company.status }}</td>
-        </tr>
-      </tbody>
-    </table> -->
-    <table class="table-auto">
+       <table class="table-auto">
   <thead>
     <tr>
       <th class="px-4 py-2" colspan="">Company Information</th>

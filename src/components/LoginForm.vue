@@ -48,8 +48,7 @@
 </template>
 
 <script>
-
-import axios from 'axios';
+ import {HTTP} from '../config';
 
   export default {
     name: 'login-form',
@@ -71,8 +70,8 @@ import axios from 'axios';
        // this.$emit('add:login', this.login)
        if(this.login.username!= '' && this.login.password!=''){
          this.loading= true 
-          axios
-          .post('http://localhost:8000/api/v1/auth/login', this.login)
+          HTTP
+          .post('auth/login', this.login)
           .then(request => this.loginSuccessful(request))
           //.catch((e) => this.loginFailed(e))
           console.log('testing handleSubmit')
@@ -122,16 +121,6 @@ import axios from 'axios';
             }
         }
     }
-
-      // if(req.data.type == 'admin'){
-      //   this.$router.replace(this.$route.query.redirect || '/dashboard')
-      // }
-      // else if(req.data.type == 'company'){
-      //   this.$router.replace(this.$route.query.redirect || '/companyDash')
-      // }
-      //  else if(req.data.type == 'employee'){
-      //   this.$router.replace(this.$route.query.redirect || '/employeeDash')
-      // }
       
     },
     loginFailed () {

@@ -160,9 +160,11 @@
 import CompanyCard from '@/components/CompanyList.vue'
 import EmployeeCard from '@/components/EmployeeList.vue'
 import Nav from '@/components/Nav.vue'
-import axios from 'axios';
+//import axios from 'axios';
 
-let baseUrl ='http://localhost:8000/api/v1/';
+//let baseUrl ='http://localhost:8000/api/v1/';
+
+ import {HTTP} from '../config';
 
 export default {
   name: 'Home',  
@@ -209,20 +211,20 @@ export default {
 
     editDetails(){
       if(this.type == 'company'){
-        axios
-        .put('http://localhost:8000/api/v1/company/'+this.companyData.company_id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .put('company/'+this.companyData.company_id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
       }else{
-        axios
-        .put(baseUrl+'employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .put('employee/'+this.companyData.id, {name: this.companyData.name}, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
       }
       },
 
       addNewComp(){
         if(this.newComp.name!='' && this.newComp.email!='' && this.newComp.password!=''){          
-            axios
-            .post(baseUrl+'company/create', this.newComp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+            HTTP
+            .post('company/create', this.newComp, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
             .then(response => (this.resData(response.data)))
         }
         else{
@@ -236,13 +238,13 @@ export default {
 
       deleteItem(){
       if(this.type == 'company'){
-        axios
-        .delete('http://localhost:8000/api/v1/company/'+this.companyData.company_id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .delete('company/'+this.companyData.company_id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
         this.userAction = 'deleted';
       }else{
-        axios
-        .delete('http://localhost:8000/api/v1/employee/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+        HTTP
+        .delete('employee/'+this.companyData.id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
         .then(response => (this.resData(response.data)))
         this.userAction = 'deleted';
       }

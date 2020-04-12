@@ -45,7 +45,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
+   import {HTTP} from '../config';
+  
   export default {
     name: 'employees-table',
     
@@ -58,9 +59,8 @@
     }
   },
   mounted () {
-    console.log('LoginToken: '+this.loginToken);
-    axios
-      .get('http://localhost:8000/api/v1/employee/company/all',   { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+    HTTP
+      .get('employee/company/all')
       .then(response => (this.employees = response.data))
       if(this.loginToken!=""){
           this.login = true
@@ -72,8 +72,8 @@
   methods:{
     getSingle(id, action, type){
       console.log(id)
-      axios
-      .get('http://localhost:8000/api/v1/employee/'+id, { headers: {"Authorization" : `Bearer ${this.loginToken}`}} )
+      HTTP
+      .get('employee/'+id)
       .then(response => (this.show(response.data, action, type)))
 
     },

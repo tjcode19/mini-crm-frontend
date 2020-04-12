@@ -15,6 +15,13 @@ cd 'projectName'
 Mine is mini-crm-frontend
 ```
 
+### Update your base url in config.js
+
+```
+You need to change the base url to api url
+It is http://localhost:8000 by default 
+```
+
 ### Run NPM 
 ```
 npm install

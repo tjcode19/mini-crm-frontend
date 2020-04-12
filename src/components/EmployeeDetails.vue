@@ -43,7 +43,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
+   import {HTTP} from '../config';
+
   export default {
     name: 'employees-table',
     
@@ -56,9 +57,8 @@
     }
   },
   mounted () {
-    axios
-      .get('http://localhost:8000/api/v1/employee/'+this.userID,   
-      { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
+   HTTP
+      .get('employee/'+this.userID)
       .then(response => (this.employee = response.data.data))
   },
   methods: {
