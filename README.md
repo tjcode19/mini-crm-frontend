@@ -1,6 +1,21 @@
 # mini-crm-frontend
 
 ## Project setup
+
+
+### Clone the mini-crm-frontend project
+```
+git clone https://github.com/tjcode19/mini-crm-frontend.git
+```
+
+### CD into the cloned project on your system
+
+```
+cd 'projectName'
+Mine is mini-crm-frontend
+```
+
+### Run NPM 
 ```
 npm install
 ```
@@ -19,6 +34,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

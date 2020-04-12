@@ -7,14 +7,14 @@
   <thead>
     <tr>
       <th class="px-4 py-2">Logo</th>
-      <th class="px-4 py-2">Name</th>
-      <th class="px-4 py-2">Email</th>
+      <th class="px-4 py-2" @click="sort('name')">Name</th>
+      <th class="px-4 py-2" @click="sort('email')">Email</th>
       <th class="px-4 py-2">Status</th>
       <th class="px-4 py-2"></th>
     </tr>
   </thead>
   <tbody>
-    <tr v-for="company in companies.data" :key="company.id">
+    <tr v-for="company in sortedCats" :key="company.id">
       <td class="border px-4 py-2"><img alt="Vue logo" src="../assets/logo.png" class="w-4 h-4 rounded-full mr-1"></td>
       <td class="border px-4 py-2">{{ company.name }}</td>
       <td class="border px-4 py-2">{{ company.email }}</td>
@@ -34,7 +34,7 @@
 
   </tbody>
 </table>
-<paginated-list :list-data="companies"/>  
+<!-- <paginated-list :list-data="companies"/>  
 <div>
   <ul>
     <li v-for="p in paginatedData" :key="p.id">
@@ -49,7 +49,14 @@
   <button @click="nextPage">
     Next
   </button>
-</div>
+</div> -->
+
+debug: sort={{currentSort}}, dir={{currentSortDir}}, page={{currentPage}}
+
+<p>
+<button v-on:click="prevPage">Previous</button> 
+<button v-on:click="nextPage">Next</button>
+</p>
   </div>
 </template>
 
@@ -58,7 +65,6 @@
   let baseURL= 'http://localhost:8000/api/v1/company/';
   export default {
     name: 'companies-table',
-    components: 'list-data',
     
     data () {
     return {
@@ -66,24 +72,17 @@
       companyD:[],
        loginToken : localStorage.getItem('token'),
        login: false,
-       pageNumber: 0,
+       pageSize:5,
+  currentPage:1,
+  currentSort:'id',
+  currentSortDir:'asc'
+      // pageNumber: 0,
     }
-  },
-  props:{
-      listData:{
-        type:Array,
-        required:true
-      },
-      size:{
-        type:Number,
-        required:false,
-        default: 1
-      }
   },
   mounted () {
     axios
       .get(baseURL+ 'all/')
-      .then(response => (this.companies = response.data))
+      .then(response => (this.companies = response.data.data))
         if(this.loginToken!=""){
           this.login = true
         }
@@ -108,27 +107,44 @@
     addNewComp(){
       this.$root.$modal.show('view-details', {type:'company',companyData: [], action: 'new', });
     },
-    nextPage(){
-         this.pageNumber++;
-      },
-      prevPage(){
-        this.pageNumber--;
+    nextPage() {
+      if((this.currentPage*this.pageSize) < this.companies.length) this.currentPage++;
+    },
+    prevPage() {
+      if(this.currentPage > 1) this.currentPage--;
+    },
+    sort:function(s) {
+    //if s == current sort, reverse
+      if(s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
       }
+      this.currentSort = s;
+    }
+    // nextPage(){
+    //      this.pageNumber++;
+    //   },
+    //   prevPage(){
+    //     this.pageNumber--;
+    //   }
 
   },
-   computed:{
-    pageCount(){
-      let l = this.listData.length,
-          s = this.size;
-      return Math.ceil(l/s);
-    },
-    paginatedData(){
-      const start = this.pageNumber * this.size,
-            end = start + this.size;
-      return this.listData
-               .slice(start, end);
+
+  computed:{
+      sortedCats:function() {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        return this.companies.sort((a,b) => {
+          let modifier = 1;
+          if(this.currentSortDir === 'desc') modifier = -1;
+          if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+          return 0;
+        }).filter((row, index) => {
+            let start = (this.currentPage-1)*this.pageSize;
+            let end = this.currentPage*this.pageSize;
+            if(index >= start && index < end) return true;
+          });
+      }
     }
-  },
   }
 </script>
 
