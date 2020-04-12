@@ -73,14 +73,14 @@
     </div>     
   </form>
     </modal>
-  <div class="dashboard mx-auto px-1 pt-4">
+  <div class="dashboard mx-auto px-1 pt-4 container">
     <!-- Two columns -->
     <div class="flex mb-4">
-      <div class="w-1/2 bg-gray-400 mx-2">
+      <div class="w-1/2 bg-white mx-2 rounded shadow-md">
      <CompanyCard/>
 
 </div>
-      <div class="w-1/2 bg-gray-500 mx-2 rounded shadow-sm">
+      <div class="w-1/2 bg-white mx-2 rounded shadow-md">
       <EmployeeDetailsCard/>
   </div>
     </div>

@@ -8,9 +8,9 @@
     <span class="font-semibold text-xl tracking-tight">Mini CRM App</span>
   </div>
   
-  <div class="w-full block flex-grow lg:flex lg:items-left lg:w-auto">
+  <div class="flex lg:flex lg:items-right lg:w-auto">
     <div v-show="login">
-      <a href="#"  v-on:click="logout" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Logout</a>
+      <a href="#"  v-on:click="logout" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-orange-500 hover:bg-white mt-4 lg:mt-0">Logout</a>
     </div>
   </div>
 </nav>

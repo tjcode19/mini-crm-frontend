@@ -8,7 +8,7 @@
         </tr>
       </tbody>
     </table> -->
-    <table class="table-auto">
+    <table class="table-auto w-full mb-2">
   <thead>
     <tr>
       <th class="px-4 py-2" colspan="2">Employee Details</th>
@@ -58,7 +58,7 @@
   },
   mounted () {
    HTTP
-      .get('employee/'+this.userID)
+      .get('employee/'+this.userID, { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
       .then(response => (this.employee = response.data.data))
   },
   methods: {

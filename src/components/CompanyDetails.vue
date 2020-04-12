@@ -1,22 +1,22 @@
 <template>
-  <div id="companies-table">
-       <table class="table-auto">
-  <thead>
-    <tr>
-      <th class="px-4 py-2" colspan="">Company Information</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="border px-4 py-2">Name</td>
-      <td class="border px-4 py-2">{{ company.name }}</td>
-    </tr>
-    <tr>
-      <td class="border px-4 py-2">Email</td>
-      <td class="border px-4 py-2">{{ company.email }}</td>
-    </tr>
-  </tbody>
-</table>
+  <div id="companies-table" class=" p-3">
+       <table class="table-auto text-left text-gray-700 w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-2" colspan="">Company Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border px-4 py-2">Name</td>
+            <td class="border px-4 py-2">{{ company.name }}</td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2">Email</td>
+            <td class="border px-4 py-2">{{ company.email }}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 </template>
 

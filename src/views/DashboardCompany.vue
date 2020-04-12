@@ -4,12 +4,8 @@
   <div class="dashboard container mx-auto px-1 pt-4">
 
      <modal name="view-details" @before-open="beforeOpen" class="px-5 my-auto" :min-height="300" height="auto" :scrollable="true">
-       <div slot="top-right">
-      <button @click="$modal.hide('foo')">
-        ❌
-      </button>
-    </div>
-       <table class="table-auto mx-auto" v-show="userAction=='view'">
+       
+       <table class="table-auto mx-auto mt-2 mb-3" v-show="userAction=='view'">
   <thead>
     <tr>
       <th class="px-4 py-2" colspan="2">{{ companyData.name }} Details</th>
@@ -57,7 +53,7 @@
     </div>
     <div class="flex items-center justify-between">
       <button v-on:click="closeModal" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-        Cancel
+        Close
       </button>
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
         Edit
@@ -107,7 +103,7 @@
     </div>
     <div class="flex items-center justify-between">
       <button v-on:click="closeModal" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-        Cancel
+        Close
       </button>
       <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
         Add New Employee
@@ -116,31 +112,37 @@
     </div>     
   </form>
 
-  <div v-show="userAction=='delete'">
-    <p>Are you sure you want to delete?</p>
-    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">No</button>
-    <button v-on:click="deleteItem" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">Proceed</button>
+  <div v-show="userAction=='delete'" class=" p-4">
+    <p class=" mb-2">Are you sure you want to delete?</p>
+    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 mr-2 text-white py-1 px-2">No</button>
+    <button v-on:click="deleteItem" type="button" class="bg-red-500 hover:bg-red-700 text-white py-1 px-1">Proceed</button>
   </div>
 
    <div v-show="userAction=='deleted'">
-    <div class=" bg-green-200 border-l-4 border-green-500 text-green-900 p-2" v-show="isResponse" role="alert">
+    <div class=" bg-green-200 border-l-4 border-green-500 text-green-900 p-2 mt-1 mb-1" v-show="isResponse" role="alert">
       <p class="font-bold">Success!</p>
       <p>{{resMsg}}</p>
     </div>
-    <div class="bg-red-200 border-l-4 border-red-500 text-red-700 p-4" v-show="isResponseError" role="alert">
+    <div class="bg-red-200 border-l-4 border-red-500 text-red-700 p-2 mt-1 mb-1" v-show="isResponseError" role="alert">
       <p class="font-bold">Failed</p>
       <p>{{resMsg}}</p>
     </div>
-    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full">Close</button>
+    <button v-on:click="closeModal" type="button" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full m-2">Close</button>
   </div>
     </modal>
     <!-- Two columns -->
+    
+    <div class="flex mb-4 text-left p-3 bg-orange-400">
+      <div class="w-full h-6">
+        <h1 class=" text-sm">Welcome</h1>
+      </div>
+    </div>
     <div class="flex mb-4">
-      <div class="w-1/2 bg-gray-400 mx-2">
+      <div class="w-1/3 bg-white mx-2 rounded shadow-md">
      <CompanyDetailsCard/>
 
 </div>
-      <div class="w-1/2 bg-gray-500 mx-2 rounded shadow-sm">
+      <div class="w-2/3 bg-white mx-2 rounded shadow-md">
       <EmployeeCard/>
   </div>
     </div>

@@ -5,7 +5,7 @@
         </button>
 
         <p>Page {{currentPage}} of {{ Math.round(totalPage) }}</p>
-    <table class="table-auto">
+    <table class="table-auto w-full">
   <thead>
     <tr>
       <th class="px-4 py-2">Logo</th>
@@ -40,8 +40,8 @@
 
 
 <p>
-<button v-on:click="prevPage">Previous</button> 
-<button v-on:click="nextPage">Next</button>
+<button v-on:click="prevPage" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full m-2">  Previous</button> 
+<button v-on:click="nextPage" :disabled="currentPage==totalPage" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full m-2">Next</button>
 </p>
   </div>
 </template>

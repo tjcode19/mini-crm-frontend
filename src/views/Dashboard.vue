@@ -143,11 +143,11 @@
     
     <!-- Two columns -->
     <div class="flex mb-4">
-      <div class="w-1/2 bg-orange-100 mx-2 rounded shadow-sm">
+      <div class="w-1/2 bg-white mx-2 rounded shadow-md">
      <CompanyCard/>
 
 </div>
-      <div class="w-1/2 bg-orange-100 mx-2 rounded shadow-sm">
+      <div class="w-1/2 bg-orange-100 mx-2 rounded shadow-md">
       <EmployeeCard/>
   </div>
     </div>

@@ -8,10 +8,10 @@
         </tr>
       </tbody>
     </table> -->
-     <button v-on:click="addNewEmp" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full" type="button">
+     <button v-on:click="addNewEmp" class="flex items-start bg-orange-500 hover:bg-orange-700 text-white py-1 px-2 ml-2 mt-2 rounded-md" type="button">
           Add New Employee
         </button>
-    <table class="table-auto">
+    <table class="table-auto w-full m-2 text-left">
   <thead>
     <tr>
       <th class="px-4 py-2">Logo</th>
@@ -28,13 +28,13 @@
       <td class="border px-4 py-2">{{ employee.email }}</td>
       <td class="border px-4 py-2">{{ employee.status }}</td>
       <td class="border px-4 py-2">
-        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full">
+        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 mr-1 rounded-full">
           View
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-orange-500 hover:bg-orange-700 text-white py-1 px-2 mr-1 rounded-full" type="button">
           Edit
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-red-500 hover:bg-red-700 text-white py-1 px-1 rounded-sm" type="button">
           Delete
         </button>
       </td>

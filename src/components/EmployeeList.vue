@@ -2,13 +2,12 @@
   <div id="employees-table">
 
     <p>Page {{currentPage}} of {{ Math.round(totalPage) }}</p>
-    <table class="table-auto">
+    <table class="table-auto w-full text-left">
   <thead>
     <tr>
       <th class="px-4 py-2">Logo</th>
       <th class="px-4 py-2">Name</th>
       <th class="px-4 py-2">Email</th>
-      <th class="px-4 py-2">Status</th>
       <th class="px-4 py-2"></th>
     </tr>
   </thead>
@@ -17,15 +16,14 @@
       <td class="border px-4 py-2"><img alt="Vue logo" src="../assets/logo.png" class="w-4 h-4 rounded-full mr-1"></td>
       <td class="border px-4 py-2">{{ employee.name }}</td>
       <td class="border px-4 py-2">{{ employee.email }}</td>
-      <td class="border px-4 py-2">{{ employee.status }}</td>
-      <td class="border px-4 py-2">
-        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full">
+      <td class="border px-4 py-2 text-center">
+        <button v-on:click="getSingle(employee.id, 'view')"  class="bg-blue-500 hover:bg-blue-700 mr-1 text-white py-1 px-2 rounded-full">
           View
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'edit', 'employee')" class="bg-orange-500 mr-1 hover:bg-orange-700 text-white py-1 px-2 rounded-full" type="button">
           Edit
         </button>
-        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full" type="button">
+        <button v-show="login" v-on:click="getSingle(employee.id, 'delete', 'employee')" class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded-full" type="button">
           Delete
         </button>
       </td>
@@ -33,8 +31,8 @@
   </tbody>
 </table>
 <p>
-<button v-on:click="prevPage">Previous</button> 
-<button v-on:click="nextPage">Next</button>
+<button v-on:click="prevPage" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full m-2">Previous</button> 
+<button v-on:click="nextPage" class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded-full m-2">Next</button>
 </p>
   </div>
 </template>
@@ -49,7 +47,7 @@
       loginToken : localStorage.getItem('token'),
       employees: [],
        login: false,
-       pageSize:7,
+       pageSize:5,
         currentPage:1,
         currentSort:'id',
         currentSortDir:'asc',
@@ -59,7 +57,7 @@
   },
   mounted () {
     HTTP
-      .get('employee/all')
+      .get('employee/all', { headers: {"Authorization" : `Bearer ${this.loginToken}`}})
       .then(response => (this.employees = response.data.data))
       if(this.loginToken!=""){
           this.login = true
